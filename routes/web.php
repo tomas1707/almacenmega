@@ -10,6 +10,7 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\MovimientoController;
 
 //Route::get('/', [HomeController::class, 'index']);
 Route::get('/', HomeController::class);
@@ -77,13 +78,15 @@ Route::prefix('/register')->group(function () {
 
 //php artisan make:model Proveedor -mcr
 Route::resource('proveedor', ProveedorController::class)->only([
-    'index'=> 'proveedores.listar', //Get Tabla para mostrar la lista completa de proveedores
+    'index', //Get Tabla para mostrar la lista completa de proveedores
     'create',//Get Formulario para crear un proveedor
     'store', //Post Funcionalidad para insertar un proveedor
     'show', //Get Tabla para mostrar unicamente un proveedor, esto a partir de su id
     'edit', //Get Formulario para editar un proveedor
     'update',//Put Funcionalidad para actualizar los datos de un proveedor
     'destroy'//Delete Funcionalidad para eliminar un proveedor
+])->names([
+    'index' => 'proveedores.listar',
 ]);
 
 //Al incluir los 7 métodos del resource basta con establecer todas las rutas de una forma compacta.

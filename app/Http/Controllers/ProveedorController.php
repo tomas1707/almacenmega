@@ -12,7 +12,11 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        //
+        $proveedores = Proveedor::orderBy('nombre')->get();
+
+        return view('proveedor.index', [
+            'proveedores' => $proveedores,
+        ]);
     }
 
     /**
@@ -20,7 +24,7 @@ class ProveedorController extends Controller
      */
     public function create()
     {
-        //
+        return view('proveedor.create');
     }
 
     /**
@@ -28,7 +32,22 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => ['required', 'string', 'max:150'],
+            'rfc' => ['required', 'string', 'max:13', 'unique:proveedores,rfc'],
+            'telefono' => ['required', 'string', 'max:20'],
+            'correo' => ['required', 'email', 'max:150', 'unique:proveedores,correo'],
+            'direccion' => ['required', 'string'],
+            'activo' => ['nullable', 'boolean'],
+        ]);
+
+        $datos['activo'] = $request->boolean('activo');
+
+        Proveedor::create($datos);
+
+        return redirect()
+            ->route('proveedores.listar')
+            ->with('mensaje', 'Proveedor registrado correctamente');
     }
 
     /**
@@ -36,7 +55,9 @@ class ProveedorController extends Controller
      */
     public function show(Proveedor $proveedor)
     {
-        //
+        return view('proveedor.show', [
+            'proveedor' => $proveedor,
+        ]);
     }
 
     /**
@@ -44,7 +65,9 @@ class ProveedorController extends Controller
      */
     public function edit(Proveedor $proveedor)
     {
-        //
+        return view('proveedor.edit', [
+            'proveedor' => $proveedor,
+        ]);
     }
 
     /**
@@ -52,7 +75,22 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, Proveedor $proveedor)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => ['required', 'string', 'max:150'],
+            'rfc' => ['required', 'string', 'max:13', 'unique:proveedores,rfc,'.$proveedor->id],
+            'telefono' => ['required', 'string', 'max:20'],
+            'correo' => ['required', 'email', 'max:150', 'unique:proveedores,correo,'.$proveedor->id],
+            'direccion' => ['required', 'string'],
+            'activo' => ['nullable', 'boolean'],
+        ]);
+
+        $datos['activo'] = $request->boolean('activo');
+
+        $proveedor->update($datos);
+
+        return redirect()
+            ->route('proveedores.listar')
+            ->with('mensaje', 'Proveedor actualizado correctamente');
     }
 
     /**
@@ -60,6 +98,10 @@ class ProveedorController extends Controller
      */
     public function destroy(Proveedor $proveedor)
     {
-        //
+        $proveedor->delete();
+
+        return redirect()
+            ->route('proveedores.listar')
+            ->with('mensaje', 'Proveedor eliminado correctamente');
     }
 }

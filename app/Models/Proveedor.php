@@ -6,5 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proveedor extends Model
 {
-    //
+    protected $table = 'proveedores';
+
+    protected $fillable = [
+        'nombre',
+        'rfc',
+        'telefono',
+        'correo',
+        'direccion',
+        'activo',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'activo' => 'boolean',
+        ];
+    }
 }
