@@ -1,0 +1,36 @@
+models:
+  Proveedor:
+    nombre: string:150
+    rfc: string:13
+    telefono: string:20
+    correo: string:150
+    direccion: text
+    activo: boolean default: true
+
+controllers:
+  ProveedorController:
+    index:
+      render: proveedor.index
+      with: proveedores
+    create:
+      render: proveedor.create
+    store:
+      save: proveedor
+      redirect: proveedor.index
+    show:
+      render: proveedor.show
+      with: proveedor
+    edit:
+      render: proveedor.edit
+      with: proveedor
+    update:
+      update: proveedor
+      redirect: proveedor.index
+    destroy:
+      delete: proveedor
+      redirect: proveedor.index
+
+routes:
+  web:
+    resource:
+      proveedor: ProveedorController
